@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+data:
+  LOG_FORMAT: json
+  LOG_LEVEL: info
+  PIPELINE_BATCH_SIZE: "125"
+  PIPELINE_WORKERS: "10"
+  XPACK_MONITORING_ENABLED: "true"
+  XPACK_MONITORING_ELASTICSEARCH_HOSTS: "https://9ca4ce2e7fd94e07856e9380b27ccb03.us-west-1.aws.found.io:9243"
