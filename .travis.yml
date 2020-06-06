@@ -4,10 +4,15 @@ language: minimal
 services:
   - docker
 
+env:
+  - LOGSTASH_VERSION=7.7.0
+
 before_script:
   - docker pull logstash:7.7.0
 
 jobs:
   include:
+  # - stage: install amazon_es plugin
+  #   script: 'docker run logstash:${LOGSTASH_VERSION} '
   - stage: logstash config test
-    script: 'docker run -v $PWD/pipeline:/usr/share/logstash/pipeline logstash:7.7.0 --config.test_and_exit'
+    script: 'docker run -v $PWD/pipeline:/usr/share/logstash/pipeline logstash:${LOGSTASH_VERSION} --config.test_and_exit'
