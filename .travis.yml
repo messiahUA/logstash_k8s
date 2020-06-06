@@ -13,6 +13,6 @@ before_script:
 jobs:
   include:
   - stage: install amazon_es plugin
-    script: 'docker run logstash:${LOGSTASH_VERSION} sh -c \'bin/logstash-plugin list\''
+    script: 'docker run logstash:${LOGSTASH_VERSION} sh -c 'bin/logstash-plugin''
   - stage: logstash config test
     script: 'docker run -v $PWD/pipeline:/usr/share/logstash/pipeline logstash:${LOGSTASH_VERSION} --config.test_and_exit'
