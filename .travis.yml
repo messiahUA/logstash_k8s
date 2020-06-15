@@ -7,10 +7,7 @@ services:
 env:
   - LOGSTASH_VERSION=7.7.1
 
-before_script:
-  - docker pull logstash:${LOGSTASH_VERSION}
-
 jobs:
   include:
   - stage: logstash config test
-    script: 'docker run -v $PWD/pipeline:/usr/share/logstash/pipeline logstash:${LOGSTASH_VERSION} --config.test_and_exit'
+    script: '.travis/logstash.sh'
