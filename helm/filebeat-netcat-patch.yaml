@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+spec:
+  template:
+    spec:
+      containers:
+      - image: busybox
+        name: busybox
+        command: ['sh','-c']
+        args:
+          - while true; do
+            SLEEP=$((RANDOM % 1000));
+            ITERATIONS=$((RANDOM % 500));
+            echo "ITERATIONS $ITERATIONS SLEEP $SLEEP";
+            for i in $(seq $ITERATIONS); do
+            echo "test" | nc localhost 80;
+            done;
+            sleep $SLEEP;
+            done

@@ -1,7 +1,7 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: logstash-deployment
+  name: logstash
 spec:
   replicas: 1
   selector:
@@ -11,21 +11,36 @@ spec:
     metadata:
       labels:
         component: logstash
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9198"
     spec:
       containers:
         - name: logstash
-          image: docker.elastic.co/logstash/logstash:7.6.2
+          image: docker.elastic.co/logstash/logstash:7.7.1
+          livenessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 30
           ports:
             - containerPort: 5044
               name: filebeat
-            # - containerPort: 9600
-            #   name: logstash
+            - containerPort: 9600
+              name: metrics
+              protocol: TCP
           volumeMounts:
             - name: pipeline
               mountPath: /usr/share/logstash/pipeline
           envFrom:
             - configMapRef:
-                name: logstash-config
+                name: logstash-env
           env:
             - name: XPACK_MONITORING_ELASTICSEARCH_USERNAME
               valueFrom:
@@ -37,8 +52,20 @@ spec:
                 secretKeyRef:
                   name: es-credentials
                   key: es_password
+        - name: logstash-exporter
+          image: bonniernews/logstash_exporter:v0.1.2
+          command: ["/bin/sh", "-c"]
+          args:
+            - >-
+              sleep 60;
+              exec /logstash_exporter
+                --logstash.endpoint=http://localhost:9600
+                --web.listen-address=:9198
+          ports:
+            - name: exporter
+              containerPort: 9198
+              protocol: TCP
       volumes:
         - name: pipeline
-          hostPath:
-            path: /Users/udhokale/logstash/logstash_k8s/pipeline
-            type: Directory
+          configMap:
+            name: logstash-pipeline

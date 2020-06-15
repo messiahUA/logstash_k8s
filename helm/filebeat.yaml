@@ -1,0 +1,28 @@
+image:
+  repository: docker.elastic.co/beats/filebeat
+  tag: 7.7.1
+
+config:
+  filebeat.config:
+    modules:
+      path: ${path.config}/modules.d/*.yml
+      reload.enabled: true
+
+  processors:
+
+  filebeat.inputs:
+    - type: tcp
+      enabled: true
+      host: "0.0.0.0:80"
+
+  output.file:
+    enabled: false
+
+  output.logstash:
+    hosts: ["logstash:5044"] 
+
+  http.enabled: false
+  http.port: 5066
+
+monitoring:
+  enabled: false

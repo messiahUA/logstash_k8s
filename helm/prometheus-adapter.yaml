@@ -1,0 +1,27 @@
+image:
+  repository: directxman12/k8s-prometheus-adapter-amd64
+  tag: v0.6.0
+
+logLevel: 4
+
+metricsRelistInterval: 1m
+
+prometheus:
+  url: http://prometheus-server
+  port: 80
+
+replicas: 1
+
+rules:
+  default: false
+  custom: []
+  existing:
+  external:
+  - seriesQuery: '{__name__=~"^logstash_node_pipeline_events_in_total$"}'
+    resources:
+      overrides:
+        kubernetes_namespace: {resource: "namespace"}
+    name:
+      matches: ""
+      as: "logstash_node_pipeline_events"
+    metricsQuery: round(sum(increase(<<.Series>>{<<.LabelMatchers>>}[2m])))
