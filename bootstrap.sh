@@ -7,7 +7,7 @@ cd "$DIR"
 
 # Same version as for the EKS
 export KUBERNETES_VERSION=v1.16.10
-export HELM_VERSION=v3.2.3
+export HELM_VERSION=v3.2.4
 
 export KUBECTL="${DIR}/bin/kubectl"
 export MINIKUBE="${DIR}/bin/minikube"
