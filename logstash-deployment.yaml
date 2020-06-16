@@ -23,12 +23,12 @@ spec:
             httpGet:
               path: /
               port: metrics
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
           readinessProbe:
             httpGet:
               path: /
               port: metrics
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
           ports:
             - containerPort: 5044
               name: filebeat
