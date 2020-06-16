@@ -24,4 +24,4 @@ rules:
     name:
       matches: ""
       as: "logstash_node_pipeline_events"
-    metricsQuery: round(sum(increase(<<.Series>>{<<.LabelMatchers>>}[2m])))
+    metricsQuery: round(sum(increase(<<.Series>>{<<.LabelMatchers>>}[1m])))
