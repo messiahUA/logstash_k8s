@@ -31,7 +31,7 @@ if [ ! -f "${MINIKUBE}" ]; then
         chmod +x "${MINIKUBE}"
 fi
 
-"${MINIKUBE}" start --kubernetes-version=${KUBERNETES_VERSION}
+"${MINIKUBE}" start --kubernetes-version=${KUBERNETES_VERSION} --extra-config=controller-manager.horizontal-pod-autoscaler-downscale-stabilization=1m
 
 for file in "logstash-deployment.yaml" "logstash-service.yaml" "logstash-hpa.yaml"; do
     "${KUBECTL}" apply -f "$file";
@@ -46,5 +46,5 @@ done
 
 "${HELM}" upgrade -i prometheus stable/prometheus --version 11.4.0 --values helm/prometheus.yaml
 "${HELM}" upgrade -i prometheus-adapter stable/prometheus-adapter --version 2.3.1 --values helm/prometheus-adapter.yaml
-"${HELM}" upgrade -i filebeat stable/filebeat --version 4.0.0 --values helm/filebeat.yaml --post-renderer ./helm/kustomize.sh
+"${HELM}" upgrade -i filebeat stable/filebeat --version 4.0.0 --values helm/filebeat.yaml #--post-renderer ./helm/kustomize.sh
 
