@@ -20,6 +20,8 @@ config:
 
   output.logstash:
     hosts: ["logstash:5044"] 
+    ttl: 10
+    pipelining: 0
 
   http.enabled: false
   http.port: 5066
