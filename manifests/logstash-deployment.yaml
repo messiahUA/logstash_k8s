@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: logstash
-        image: docker.elastic.co/logstash/logstash:7.7.1
+        image: docker.elastic.co/logstash/logstash:7.9.0-SNAPSHOT
         livenessProbe:
           httpGet:
             path: /
