@@ -38,8 +38,8 @@ fi
 
 "${KUBECTL}" create --save-config=true secret generic es-credentials --from-literal=es_username=${ES_USERNAME} --from-literal=es_password=${ES_PASSWORD} --dry-run -o yaml | kubectl apply -f -
 
-for file in "logstash-deployment.yaml" "logstash-service.yaml" "logstash-hpa.yaml"; do
-    "${KUBECTL}" apply -f "manifests/$file";
+for file in manifests/logstash/*.yaml; do
+    "${KUBECTL}" apply -f "$file";
 done
 
 "${HELM}" repo update
