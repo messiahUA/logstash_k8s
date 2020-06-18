@@ -1,5 +1,0 @@
-version: 1
-patchUpdated:
-  generators:
-  - command: kubectl create configmap logstash-env --from-env-file=../logstash.properties -o yaml --dry-run
-  patchFile: flux-patch.yaml
