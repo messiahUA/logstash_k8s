@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: logstash
-        image: messiahua/logstash:90df855
+        image: messiahua/logstash:1414554
         livenessProbe:
           httpGet:
             path: /
