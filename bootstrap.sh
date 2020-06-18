@@ -33,16 +33,16 @@ fi
 
 "${MINIKUBE}" start --kubernetes-version=${KUBERNETES_VERSION} --extra-config=controller-manager.horizontal-pod-autoscaler-downscale-stabilization=1m
 
-for file in "logstash-deployment.yaml" "logstash-service.yaml" "logstash-hpa.yaml"; do
-    "${KUBECTL}" apply -f "$file";
-done
-
-"${HELM}" repo update
-
 "${KUBECTL}" create configmap logstash-env --from-env-file=logstash.properties -o yaml --dry-run | kubectl apply -f -
 "${KUBECTL}" create configmap logstash-pipeline --from-file=pipeline/logstash-default.conf -o yaml --dry-run | kubectl apply -f -
 
 "${KUBECTL}" create --save-config=true secret generic es-credentials --from-literal=es_username=${ES_USERNAME} --from-literal=es_password=${ES_PASSWORD} --dry-run -o yaml | kubectl apply -f -
+
+for file in "logstash-deployment.yaml" "logstash-service.yaml" "logstash-hpa.yaml"; do
+    "${KUBECTL}" apply -f "manifests/$file";
+done
+
+"${HELM}" repo update
 
 "${HELM}" upgrade -i prometheus stable/prometheus --version 11.4.0 --values helm/prometheus.yaml
 "${HELM}" upgrade -i prometheus-adapter stable/prometheus-adapter --version 2.3.1 --values helm/prometheus-adapter.yaml
