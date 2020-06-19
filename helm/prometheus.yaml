@@ -21,7 +21,7 @@ server:
 
   image:
     repository: prom/prometheus
-    tag: v2.19.0
+    tag: v2.19.1
 
   global:
     scrape_interval: 10s
