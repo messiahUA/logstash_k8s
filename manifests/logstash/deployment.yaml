@@ -38,6 +38,9 @@ spec:
         - containerPort: 9600
           name: metrics
           protocol: TCP
+        volumeMounts:
+        - name: pipeline
+          mountPath: /usr/share/logstash/pipeline
         envFrom:
         - configMapRef:
             name: logstash-env
@@ -65,3 +68,7 @@ spec:
         - name: exporter
           containerPort: 9198
           protocol: TCP
+      volumes:
+      - name: pipeline
+        configMap:
+          name: logstash-pipeline
